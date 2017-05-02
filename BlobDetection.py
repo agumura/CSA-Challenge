@@ -28,13 +28,13 @@ import matplotlib.pyplot as plt
 def RegionOfInterest(ImageName): 
     Img = cv2.imread(ImageName, cv2.IMREAD_GRAYSCALE)
     h, w = Img.shape 
-    return Img[(h - 1600):h, 0:w] 
+    return Img[(h - 1600):h, 0:4000] 
+
+
 ##..............................................................................
 
-def pixelate(ImageName):
-    Img = cv2.imread(ImageName, cv2.IMREAD_GRAYSCALE)
+def pixelate(Img):
     dst = copy.copy(Img)
-    
 
     Img[Img >= 128] = 255
     Img[Img < 128] = 0    
@@ -44,6 +44,8 @@ def pixelate(ImageName):
     
     dst[dst >= 128] = 255
     dst[dst < 128] = 0  
+    
+    return dst
     
 #    cv2.namedWindow('Ass', cv2.WINDOW_NORMAL)
 #    cv2.imshow('Ass', dst) # shows image in a window called 'CSA1' 
@@ -56,8 +58,41 @@ def avrg_colour(ImageName):
     return (im.mean())
 
 ##..............................................................................
-def find_the_one(Img):
-    X_i = 0 
-    Y_i = 0 
-    initial_h, initial_w = Img.shape 
-    for i in 
+def find_the_one(Img): 
+    for i in range(0, 20): 
+        for j in range(0,8): 
+            X1 = i*200
+            Y1 = j*200 
+            X2 = X1 + 200 
+            Y2 = Y1 + 200 
+            
+            ROI2 = Img[Y1:Y2, X1:X2] 
+            
+            Pixel_Intensity = ROI2.mean() 
+            
+            
+            if Pixel_Intensity >= 5: 
+                print([X1, Y1, X2, Y2])
+                print(Pixel_Intensity)
+                return [X1, Y1, X2, Y2] 
+    print("No bright pixels within ROI")
+
+
+
+
+##..............................................................................
+
+## TESTING! 
+def test_func(ImageName): 
+    ROI = RegionOfInterest(ImageName) 
+    final = pixelate(ROI)
+    
+    Lst = find_the_one(final)
+    cv2.rectangle(final, (Lst[0], Lst[1]), (Lst[2], Lst[3]), (255,255,255), 2)
+    
+    plt.imshow(final, cmap='gray', interpolation='bicubic')
+    plt.plot([], []) 
+    plt.show()
+    
+
+##..............................................................................
