@@ -42,8 +42,8 @@ def pixelate(Img):
     for i in range(1,31, 2):
         cv2.blur(Img, (85, 85), dst, (-1,-1), 0 )
     
-    dst[dst >= 128] = 255
-    dst[dst < 128] = 0  
+    #dst[dst >= 128] = 255
+    #dst[dst < 128] = 0  
     
     return dst
     
@@ -96,3 +96,54 @@ def test_func(ImageName):
     
 
 ##..............................................................................
+
+def All_Positions(Img): 
+    Lst_X = [] 
+    Lst_Y = [] 
+    
+    for i in range(0, 20): 
+        for j in range(0,8): 
+            X1 = i*200
+            Y1 = j*200 
+            X2 = X1 + 200 
+            Y2 = Y1 + 200     
+            
+            ROI2 = Img[Y1:Y2, X1:X2] 
+            
+            Pixel_Intensity = ROI2.mean() 
+            
+            if Pixel_Intensity >= 5:
+                Lst_X.append(X1) 
+                Lst_Y.append(Y1) 
+                
+    print(Lst_X) 
+    print(Lst_Y)
+    return [Lst_X, Lst_Y] 
+
+##..............................................................................
+
+def test_func2(ImageName): 
+    ROI = RegionOfInterest(ImageName) 
+    final = pixelate(ROI)
+    LOPs = All_Positions(final)
+    
+    n = len(LOPs[0])
+    
+    for i in range(0,n):
+        x = (LOPs[0])[i]
+        y = (LOPs[1])[i]
+        x2 = x + 200 
+        y2 = y + 200 
+        
+        cv2.rectangle(final, (x, x2), (y, y2), (255,255,255), 2)
+        
+    
+            
+    plt.imshow(final, cmap='gray', interpolation='bicubic')
+    plt.plot([], []) 
+    plt.show()    
+    
+##..............................................................................
+    
+    
+    
