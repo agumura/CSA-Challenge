@@ -58,6 +58,9 @@ def avrg_colour(ImageName):
     return (im.mean())
 
 ##..............................................................................
+
+## find_the_one(Img) takes an image and produces the coordinate of the top left one
+
 def find_the_one(Img): 
     for i in range(0, 20): 
         for j in range(0,8): 
@@ -144,6 +147,33 @@ def test_func2(ImageName):
     plt.show()    
     
 ##..............................................................................
+
+# Storage is the 
+
+storage = [[False for t in range(13)] for g in range(4)]
+
+## Note that the coordinate pairs for the grid go (y,x) 
+
+## gridAnalysis(storage) consumes a 4x13 array like the ones found in the numbered\
+## ionograms and converts them into their satellite,year... etc. dependent on the \
+## 
+
+def gridAnalysis(storage):
+    sumcolumns = [0 for d in range(13)]
+    translatetobinary = [0, 1, 2, 4, 8]
     
+    for k in range(13):
+        for l in range (4):
+            if storage[l][k] == True:
+                sumcolumns[k] += translatetobinary[l]
+    satellite = str(sumcolumns[0])
+    year = str(sumcolumns[1])
+    dayOfYear = str(sumcolumns[2]*100 + sumcolumns[3]*10 + sumcolumns[4])
+    hour = str(sumcolumns[5]*10 + sumcolumns[6])
+    minute =  str(sumcolumns[7]*10 + sumcolumns[8])
+    sec = str(sumcolumns[9]*10 + sumcolumns[10])
+    station = str(sumcolumns[11]*10 + sumcolumns[12])
+    
+    return (satellite, year, dayOfYear, hour, minute, sec, station)
     
     
